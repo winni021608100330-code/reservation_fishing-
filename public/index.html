@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>9/6 인천 쭈꾸미 자리 헌터 · Netlify</title>
+<title>인천 쭈꾸미 자리 헌터 · Netlify</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <style>
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
@@ -11,22 +11,34 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
 body{font-family:'Pretendard',system-ui,sans-serif;background:var(--paper);color:var(--text);line-height:1.5;padding-bottom:48px}
-header{background:radial-gradient(120% 90% at 80% -10%,rgba(255,106,60,.28),transparent 55%),linear-gradient(165deg,var(--ink-2),var(--ink));color:var(--foam);padding:calc(env(safe-area-inset-top) + 24px) 22px 24px;position:relative;overflow:hidden}
+header{background:radial-gradient(120% 90% at 80% -10%,rgba(255,106,60,.28),transparent 55%),linear-gradient(165deg,var(--ink-2),var(--ink));color:var(--foam);padding:calc(env(safe-area-inset-top) + 24px) 22px 22px;position:relative;overflow:hidden}
 header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(233,240,238,.35),transparent)}
 .kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(233,240,238,.62);font-weight:600;margin-bottom:10px}
-h1{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+h1{font-size:25px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
 h1 .day{color:var(--buoy)}
-.lede{margin-top:11px;font-size:13.5px;color:rgba(233,240,238,.82);max-width:30em}
-.lede b{color:#fff;font-weight:700}
-main{max-width:560px;margin:0 auto;padding:18px 16px 0}
-section{margin-top:24px}
+.lede{margin-top:10px;font-size:13px;color:rgba(233,240,238,.82);max-width:30em}
+
+/* 날짜 선택 바 */
+.pickwrap{max-width:560px;margin:0 auto;padding:16px 16px 0}
+.pick{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:14px}
+.pick label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.pick .row{display:flex;gap:8px;align-items:center}
+.pick input[type=date]{flex:1;font-family:inherit;font-size:16px;font-weight:700;color:var(--text);border:1px solid var(--line);border-radius:11px;padding:11px 12px;background:var(--foam)}
+.pick .bell{flex:none;border:none;cursor:pointer;font-family:inherit;font-size:13.5px;font-weight:800;color:#fff;background:var(--ink);border-radius:11px;padding:11px 14px;transition:transform .12s,background .2s}
+.pick .bell:active{transform:scale(.96)}
+.pick .bell.on{background:var(--kelp)}
+.pick .watchline{margin-top:10px;font-size:12px;color:var(--tide);display:flex;align-items:center;gap:6px}
+.pick .watchline b{color:var(--ink-2)}
+
+main{max-width:560px;margin:0 auto;padding:8px 16px 0}
+section{margin-top:20px}
 .bar{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .bar h2{font-size:17px;font-weight:700;letter-spacing:-.01em}
 .bar .meta{margin-left:auto;font-size:11.5px;color:var(--muted)}
-.bar .refresh{border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:#fff;background:var(--buoy);border-radius:999px;padding:8px 14px;display:flex;align-items:center;gap:6px;transition:transform .12s,opacity .2s}
-.bar .refresh:active{transform:scale(.95)}
+.bar .refresh{border:none;cursor:pointer;font-family:inherit;color:#fff;background:var(--buoy);border-radius:999px;padding:8px;display:grid;place-items:center;transition:transform .12s,opacity .2s}
+.bar .refresh:active{transform:scale(.92)}
 .bar .refresh.spin{opacity:.6;pointer-events:none}
-.bar .refresh svg{width:14px;height:14px}
+.bar .refresh svg{width:16px;height:16px;display:block}
 .bar .refresh.spin svg{animation:rot .8s linear infinite}
 @keyframes rot{to{transform:rotate(360deg)}}
 .boats{display:grid;gap:12px}
@@ -39,8 +51,7 @@ section{margin-top:24px}
 .seat{margin-left:auto;flex:none;text-align:right}
 .badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;border-radius:999px;padding:6px 12px;white-space:nowrap}
 .badge .dot{width:7px;height:7px;border-radius:50%}
-.badge.loading{background:#eef2f1;color:var(--muted)}
-.badge.loading .dot{background:var(--muted);animation:pulse 1s ease-in-out infinite}
+.badge.loading{background:#eef2f1;color:var(--muted)}.badge.loading .dot{background:var(--muted);animation:pulse 1s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.25}}
 .badge.open{background:rgba(31,143,111,.12);color:var(--kelp)}.badge.open .dot{background:var(--kelp)}
 .badge.full{background:#eef2f1;color:var(--muted)}.badge.full .dot{background:var(--stop)}
@@ -50,25 +61,35 @@ section{margin-top:24px}
 .act:active{transform:scale(.97)}
 .act.call{background:var(--foam);color:var(--ink-2);border:1px solid var(--line)}
 .act.call.disabled{opacity:.45;pointer-events:none}
-.act.book{background:var(--buoy);color:#fff}
-.act.book.alt{background:var(--ink)}
-footer{max-width:560px;margin:26px auto 0;padding:0 18px;font-size:11.5px;color:var(--muted);line-height:1.6}
+.act.book{background:var(--ink);color:#fff}
+footer{max-width:560px;margin:24px auto 0;padding:0 18px;font-size:11.5px;color:var(--muted);line-height:1.6}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header>
   <div class="kicker">서해 · 연안부두 / 만석부두</div>
-  <h1><span class="day">9월 6일(일)</span> 인천 쭈꾸미 · 실시간 자리</h1>
-  <p class="lede">서버가 직접 읽어옵니다(프록시 없음). 5분마다 자동 감시 중 — <b>마감→자리남</b>으로 바뀌면 알림이 갑니다.</p>
+  <h1>인천 쭈꾸미 <span class="day">자리 헌터</span></h1>
+  <p class="lede">날짜를 고르면 그날 빈자리를 실시간으로 읽어옵니다. 🔔 누르면 그 날짜를 5분마다 감시하다가 자리 뜨면 텔레그램으로 알려줘요.</p>
 </header>
+
+<div class="pickwrap">
+  <div class="pick">
+    <label for="datePick">출조 날짜</label>
+    <div class="row">
+      <input type="date" id="datePick" value="2026-09-06" min="2026-01-01" max="2026-12-31">
+      <button class="bell" id="bell">🔔 이 날짜 알림</button>
+    </div>
+    <div class="watchline" id="watchline">감시 중인 날짜를 불러오는 중…</div>
+  </div>
+</div>
 
 <main>
   <section>
     <div class="bar">
-      <h2>선사별 잔여석</h2>
+      <h2 id="autoTitle">선사별 잔여석</h2>
       <span class="meta" id="meta"></span>
-      <button class="refresh" id="refreshAll">
+      <button class="refresh" id="refreshAll" title="새로고침">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
       </button>
     </div>
@@ -80,18 +101,21 @@ footer{max-width:560px;margin:26px auto 0;padding:0 18px;font-size:11.5px;color:
     <div class="boats" id="manualBoats"></div>
   </section>
 
-  <footer id="foot">잔여석은 새로고침 시점 기준이며 수시로 바뀝니다. 전화 전 한 번 더 확인하세요.</footer>
+  <footer>잔여석은 새로고침 시점 기준이며 수시로 바뀝니다. 알림 받으면 바로 전화가 안전해요. 인천제일·우리바다·칸피싱은 자체 시스템이라 자동확인이 안 됩니다.</footer>
 </main>
 
 <script>
-const YM = "202609";
 const MANUAL = [
-  { name:"인천제일바다낚시", port:"연안부두", fleet:"선단 7척 (하하호호·새시대·고래·금강스타·모비딕·마루·스모키)", note:"배가 제일 많아 9/6 취소표 확률 최상 · 좌석이 이미지라 자동확인 불가", tel:"010-4289-7900", book:"https://jnaksi.com/index.php?mid=bk&year=2026&month=09&day=06" },
+  { name:"인천제일바다낚시", port:"연안부두", fleet:"선단 7척 (하하호호·새시대·고래·금강스타·모비딕·마루·스모키)", note:"배가 제일 많아 취소표 확률 최상 · 좌석이 이미지라 자동확인 불가", tel:"010-4289-7900", book:"https://jnaksi.com/index.php?mid=bk" },
   { name:"우리바다낚시", port:"연안부두", fleet:"우리바다호·제우스호", note:"가을엔 우럭·갑오징어 위주 — 쭈꾸미 여부 통화 확인", tel:"010-5759-0013", book:"https://woorinaksi.com/m/index.php?mid=bk" },
   { name:"칸피싱", port:"연안부두", fleet:"주꾸미·갑오징어·우럭·광어 등", tel:"", book:"https://khanfishing.com" },
 ];
 
-const badge = (b)=> {
+const fn = (p) => "/.netlify/functions/" + p;
+const ymOf = (d) => d.slice(0,4) + d.slice(5,7);          // 2026-09-06 → 202609
+const dateLabel = (d) => { const [y,m,dd]=d.split("-").map(Number); const w=["일","월","화","수","목","금","토"][new Date(y,m-1,dd).getDay()]; return `${m}월 ${dd}일(${w})`; };
+
+const badge = (b)=>{
   if(b.loading) return '<span class="badge loading"><span class="dot"></span>확인 중…</span>';
   if(b.state==="open") return '<span class="badge open"><span class="dot"></span>남은자리 '+b.seats+'명</span>';
   if(b.state==="full") return '<span class="badge full"><span class="dot"></span>예약마감</span>';
@@ -101,50 +125,76 @@ const telBtn = (tel)=> tel
   ? '<a class="act call" href="tel:'+tel.replace(/-/g,"")+'">📞 '+tel+'</a>'
   : '<span class="act call disabled">전화 없음</span>';
 
-function cardAuto(b){
-  const book = b.base + "/ship/schedule_fleet/" + YM;
+function cardAuto(b, ym){
+  const book = b.base + "/ship/schedule_fleet/" + ym;
   return '<div class="boat"><div class="top"><div><div class="name">'+b.name+'</div><span class="port">'+b.port+'</span></div>'+
     '<div class="seat">'+badge(b)+'</div></div>'+
-    (b.note?'<div class="note">'+b.note+'</div>':"")+
-    '<div class="actions">'+telBtn(b.tel)+'<a class="act book alt" href="'+book+'" target="_blank" rel="noopener">9월 캘린더 →</a></div></div>';
+    '<div class="actions">'+telBtn(b.tel)+'<a class="act book" href="'+book+'" target="_blank" rel="noopener">캘린더 →</a></div></div>';
 }
 function cardManual(b){
   return '<div class="boat"><div class="top"><div><div class="name">'+b.name+'</div><span class="port">'+b.port+'</span></div>'+
     '<div class="seat"><span class="badge fail"><span class="dot"></span>직접 확인</span></div></div>'+
     '<div class="fleet">'+b.fleet+'</div>'+(b.note?'<div class="note">'+b.note+'</div>':"")+
-    '<div class="actions">'+telBtn(b.tel)+'<a class="act book alt" href="'+b.book+'" target="_blank" rel="noopener">9월 캘린더 →</a></div></div>';
+    '<div class="actions">'+telBtn(b.tel)+'<a class="act book" href="'+b.book+'" target="_blank" rel="noopener">예약 페이지 →</a></div></div>';
 }
 
-function renderManual(){
-  document.getElementById("manualBoats").innerHTML = MANUAL.map(cardManual).join("");
-}
-function renderAutoLoading(){
-  document.getElementById("autoBoats").innerHTML =
-    ['챌린저호','팀에프(원·투호)','명낚시'].map(n=>cardAuto({name:n,port:"",fleet:"",base:"#",tel:"",loading:true})).join("");
-}
+function curDate(){ return document.getElementById("datePick").value; }
 
 async function loadStatus(){
-  const btn = document.getElementById("refreshAll");
-  btn.classList.add("spin");
-  renderAutoLoading();
+  const date = curDate();
+  const ym = ymOf(date);
+  document.getElementById("autoTitle").textContent = dateLabel(date) + " 잔여석";
+  const btn = document.getElementById("refreshAll"); btn.classList.add("spin");
+  document.getElementById("autoBoats").innerHTML =
+    ['챌린저호','팀에프(원·투호)','명낚시'].map(n=>cardAuto({name:n,port:"",base:"#",tel:"",loading:true}, ym)).join("");
   try{
-    const r = await fetch("/.netlify/functions/status", {cache:"no-store"});
+    const r = await fetch(fn("status")+"?date="+date, {cache:"no-store"});
     const data = await r.json();
-    document.getElementById("autoBoats").innerHTML = data.boats.map(cardAuto).join("");
+    document.getElementById("autoBoats").innerHTML = data.boats.map(b=>cardAuto(b, data.ym)).join("");
     const t = new Date(data.checkedAt);
-    document.getElementById("meta").textContent =
-      String(t.getHours()).padStart(2,"0")+":"+String(t.getMinutes()).padStart(2,"0")+" 기준";
+    document.getElementById("meta").textContent = String(t.getHours()).padStart(2,"0")+":"+String(t.getMinutes()).padStart(2,"0")+" 기준";
   }catch(e){
-    document.getElementById("autoBoats").innerHTML =
-      '<div class="boat"><div class="note">상태를 불러오지 못했어요. 배포 후(Netlify) 정상 동작합니다. 잠시 뒤 새로고침 해보세요.</div></div>';
-  }finally{
-    btn.classList.remove("spin");
+    document.getElementById("autoBoats").innerHTML = '<div class="boat"><div class="note">상태를 불러오지 못했어요. 잠시 뒤 새로고침 해보세요.</div></div>';
+  }finally{ btn.classList.remove("spin"); }
+}
+
+async function loadWatch(){
+  try{
+    const r = await fetch(fn("watch"), {cache:"no-store"});
+    const w = await r.json();
+    renderWatch(w.ymd);
+  }catch(e){ document.getElementById("watchline").textContent = ""; }
+}
+function renderWatch(ymd){
+  const line = document.getElementById("watchline");
+  const bell = document.getElementById("bell");
+  line.innerHTML = '🔔 현재 알림 감시: <b>'+dateLabel(ymd)+'</b>';
+  bell.classList.toggle("on", ymd === curDate());
+}
+
+async function setWatch(){
+  const date = curDate();
+  const bell = document.getElementById("bell");
+  bell.textContent = "설정 중…";
+  try{
+    const r = await fetch(fn("watch")+"?set="+date, {cache:"no-store"});
+    const w = await r.json();
+    renderWatch(w.ymd || date);
+    bell.textContent = "✓ 알림 켜짐";
+    setTimeout(()=>{ bell.textContent = "🔔 이 날짜 알림"; renderWatch(date); }, 1800);
+  }catch(e){
+    bell.textContent = "🔔 이 날짜 알림";
+    alert("알림 설정에 실패했어요. 잠시 뒤 다시 시도해주세요.");
   }
 }
 
+document.getElementById("datePick").addEventListener("change", ()=>{ loadStatus(); loadWatch(); });
 document.getElementById("refreshAll").addEventListener("click", loadStatus);
-renderManual();
+document.getElementById("bell").addEventListener("click", setWatch);
+
+document.getElementById("manualBoats").innerHTML = MANUAL.map(cardManual).join("");
 loadStatus();
+loadWatch();
 </script>
 </body>
 </html>
