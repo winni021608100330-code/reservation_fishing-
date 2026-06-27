@@ -106,13 +106,16 @@ footer{max-width:560px;margin:24px auto 0;padding:0 18px;font-size:11.5px;color:
 
 <script>
 const MANUAL = [
-  { name:"인천제일바다낚시", port:"연안부두", fleet:"선단 7척 (하하호호·새시대·고래·금강스타·모비딕·마루·스모키)", note:"배가 제일 많아 취소표 확률 최상 · 좌석이 이미지라 자동확인 불가", tel:"010-4289-7900", book:"https://jnaksi.com/index.php?mid=bk" },
+  { name:"인천제일바다낚시", port:"연안부두", fleet:"선단 7척 (하하호호·새시대·고래·금강스타·모비딕·마루·스모키)", note:"배가 제일 많아 취소표 확률 최상 · 좌석이 이미지라 자동확인 불가", tel:"010-4289-7900", bookTpl:"https://jnaksi.com/index.php?mid=bk&year={YYYY}&month={MM}&day={DD}" },
+  { name:"해성유선 (드래곤호·해성2호)", port:"남항부두", fleet:"쭈갑 전용 출조 · 드래곤호·해성2호", note:"잔여석은 페이지에서 직접 확인 (자동확인 불가)", tel:"010-3735-0192", bookTpl:"http://www.seastarho.com/m/index.php?mid=bk&year={YYYY}&month={MM}&day={DD}&sel=day" },
+  { name:"반가워호", port:"인천유선", fleet:"인천유선 · 쭈꾸미 선상낚시", note:"날짜 클릭 후 종목·시간 선택해 예약 (자동확인 불가)", tel:"", bookTpl:"https://bangawer.com/sub/sub02_01.php?cal_date={YYYY-MM-DD}" },
   { name:"우리바다낚시", port:"연안부두", fleet:"우리바다호·제우스호", note:"가을엔 우럭·갑오징어 위주 — 쭈꾸미 여부 통화 확인", tel:"010-5759-0013", book:"https://woorinaksi.com/m/index.php?mid=bk" },
   { name:"칸피싱", port:"연안부두", fleet:"주꾸미·갑오징어·우럭·광어 등", tel:"", book:"https://khanfishing.com" },
 ];
 
 const fn = (p) => "/.netlify/functions/" + p;
 const ymOf = (d) => d.slice(0,4) + d.slice(5,7);          // 2026-09-06 → 202609
+const fillTpl = (tpl, d) => { const [Y,M,D]=d.split("-"); return tpl.replace("{YYYY-MM-DD}",d).replace("{YYYYMM}",Y+M).replace("{YYYY}",Y).replace("{MM}",M).replace("{DD}",D); };
 const dateLabel = (d) => { const [y,m,dd]=d.split("-").map(Number); const w=["일","월","화","수","목","금","토"][new Date(y,m-1,dd).getDay()]; return `${m}월 ${dd}일(${w})`; };
 
 const badge = (b)=>{
@@ -132,11 +135,13 @@ function cardAuto(b, ym){
     '<div class="actions">'+telBtn(b.tel)+'<a class="act book" href="'+book+'" target="_blank" rel="noopener">캘린더 →</a></div></div>';
 }
 function cardManual(b){
+  const url = b.bookTpl ? fillTpl(b.bookTpl, curDate()) : b.book;
   return '<div class="boat"><div class="top"><div><div class="name">'+b.name+'</div><span class="port">'+b.port+'</span></div>'+
     '<div class="seat"><span class="badge fail"><span class="dot"></span>직접 확인</span></div></div>'+
     '<div class="fleet">'+b.fleet+'</div>'+(b.note?'<div class="note">'+b.note+'</div>':"")+
-    '<div class="actions">'+telBtn(b.tel)+'<a class="act book" href="'+b.book+'" target="_blank" rel="noopener">예약 페이지 →</a></div></div>';
+    '<div class="actions">'+telBtn(b.tel)+'<a class="act book" href="'+url+'" target="_blank" rel="noopener">예약 페이지 →</a></div></div>';
 }
+function renderManual(){ document.getElementById("manualBoats").innerHTML = MANUAL.map(cardManual).join(""); }
 
 function curDate(){ return document.getElementById("datePick").value; }
 
@@ -188,11 +193,11 @@ async function setWatch(){
   }
 }
 
-document.getElementById("datePick").addEventListener("change", ()=>{ loadStatus(); loadWatch(); });
+document.getElementById("datePick").addEventListener("change", ()=>{ loadStatus(); loadWatch(); renderManual(); });
 document.getElementById("refreshAll").addEventListener("click", loadStatus);
 document.getElementById("bell").addEventListener("click", setWatch);
 
-document.getElementById("manualBoats").innerHTML = MANUAL.map(cardManual).join("");
+renderManual();
 loadStatus();
 loadWatch();
 </script>
