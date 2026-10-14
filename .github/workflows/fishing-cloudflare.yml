@@ -1,0 +1,37 @@
+name: Fishing Cloudflare state check
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Keep real alerts off and write only the migration test state
+        required: true
+        default: true
+        type: boolean
+  # Enable the five-minute schedule only after the old Netlify scheduler is retired.
+  # schedule:
+  #   - cron: '*/5 * * * *'
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: fishing-cloudflare-state
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Verify boat status and isolated state storage
+        env:
+          FISHING_STATE_BACKEND: https://aiwftlpguuytbwtumlxh.supabase.co/functions/v1/fishing-migration
+          FISHING_DRY_RUN: ${{ inputs.dry_run }}
+          FISHING_NOTIFICATIONS_ENABLED: 'false'
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: node cloudflare/poll.mjs
