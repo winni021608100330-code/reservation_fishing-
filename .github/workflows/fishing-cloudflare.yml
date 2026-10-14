@@ -32,6 +32,6 @@ jobs:
           FISHING_STATE_BACKEND: https://aiwftlpguuytbwtumlxh.supabase.co/functions/v1/fishing-migration
           FISHING_DRY_RUN: ${{ inputs.dry_run }}
           FISHING_NOTIFICATIONS_ENABLED: 'false'
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.FISHING_TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.FISHING_TELEGRAM_CHAT_ID }}
         run: node cloudflare/poll.mjs
